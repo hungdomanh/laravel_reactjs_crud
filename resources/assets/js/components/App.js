@@ -42,7 +42,6 @@ export default class App extends Component {
         // make delete request to the backend
         axios.delete(`/tasks/${id}`);
     }
-
     handleChange(e) {
         this.setState({
             name: e.target.value
@@ -104,18 +103,18 @@ export default class App extends Component {
                         <div className="card">
                             <div className="card-header">Create Task</div>
                             <div className="card-body">
-                                <form onSubmit={this.handleSubmit}>
-                                    <div className="form-group">
-                                        <textarea
-                                            onChange={this.handleChange}
-                                            value={this.state.name}
-                                            className="form-control"
-                                            rows="5"
-                                            maxLength="255"
-                                            placeholder="Create a new task"
-                                            required
-                                        />
-                                    </div>
+                                <form onSubmit={this.handleSubmit}>                                    
+                                <div className="form-group">
+                                    <textarea
+                                        onChange={this.handleChange}
+                                        value={this.state.name}
+                                        className="form-control"
+                                        rows="5"
+                                        maxLength="255"
+                                        placeholder="Create a new task"
+                                        required
+                                    />
+                                </div>
                                     <button
                                         type="submit"
                                         className="btn btn-primary"
@@ -126,6 +125,7 @@ export default class App extends Component {
 
                                 <hr />
                                 {this.renderTasks()}
+
                             </div>
                         </div>
                     </div>

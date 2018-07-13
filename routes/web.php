@@ -1,4 +1,8 @@
 <?php
+<<<<<<< HEAD
+=======
+
+>>>>>>> c2eb8c81ae584adcc99f3c29b36420b5e0d7b42c
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,11 +14,14 @@
 |
 */
 
+<<<<<<< HEAD
 function newFunction()
 {
     echo "Hi!";
 }
 
+=======
+>>>>>>> c2eb8c81ae584adcc99f3c29b36420b5e0d7b42c
 Route::get('/', function () {
     return view('welcome');
 });
@@ -22,6 +29,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+<<<<<<< HEAD
 Route::get('/task', 'TaskController@test')->name('task');
 // Route::get('test', 'TaskController@store');
 Route::resource('tasks', 'TaskController');
+=======
+>>>>>>> c2eb8c81ae584adcc99f3c29b36420b5e0d7b42c

@@ -19,8 +19,11 @@
         "popper.js": "^1.12",
         "react": "^16.2.0",
         "react-dom": "^16.2.0"
+<<<<<<< HEAD
     },
     "dependencies": {
         "react-router-dom": "^4.3.1"
+=======
+>>>>>>> c2eb8c81ae584adcc99f3c29b36420b5e0d7b42c
     }
 }
