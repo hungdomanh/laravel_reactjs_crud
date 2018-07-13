@@ -2,6 +2,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Log;
+use App\Util;
+use App\Task;
 
 class TaskController extends Controller
 {
@@ -27,6 +30,11 @@ class TaskController extends Controller
         return response()->json(['tasks' => $tasks]);
     }
 
+    public function test()
+    {
+        return "test";
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -34,7 +42,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
+        return "create";
     }
 
     /**
@@ -46,7 +54,6 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, ['name' => 'required|max:255']);
-
         $task = $request
             ->user()
             ->tasks()
@@ -63,7 +70,7 @@ class TaskController extends Controller
      */
     public function show($id)
     {
-        //
+        return "IDDDDDD";
     }
 
     /**
@@ -74,7 +81,9 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
-        //
+        $task = Task::findOrFail($id);
+
+        return response()->json(['task' => $task]);
     }
 
     /**
@@ -86,7 +95,12 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $input = $request->all();
+        Log::info($input);
+        $task = Task::findOrFail($id);
+        $task->update($input);
+
+        return response()->json($task->with('user')->find($task->id));
     }
 
     /**
@@ -97,6 +111,6 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Task::findOrFail($id)->delete();
     }
 }

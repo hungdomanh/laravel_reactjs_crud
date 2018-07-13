@@ -1,20 +1,100 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from "react-dom";
+import { Link } from "react-router-dom";
+import React, { Component } from "react";
+import axios from "axios";
 
 export default class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: '',
+            name: "asdasdas",
             tasks: []
         };
         this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.renderTasks = this.renderTasks.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+        // this.handleUpdate = this.handleUpdate.bind(this);
     }
+    handleSubmit(e) {
+        e.preventDefault();
+        axios
+            .post("/tasks", {
+                name: this.state.name
+            })
+            .then(response => {
+                console.log("from handle submit", response);
+                // set state
+                this.setState({
+                    tasks: [response.data, ...this.state.tasks]
+                });
+                // then clear the value of textarea
+                this.setState({
+                    name: ""
+                });
+            });
+    }
+    handleDelete(id) {
+        // remove from local state
+        const isNotId = task => task.id !== id;
+        const updatedTasks = this.state.tasks.filter(isNotId);
+        this.setState({ tasks: updatedTasks });
+        // make delete request to the backend
+        axios.delete(`/tasks/${id}`);
+    }
+
     handleChange(e) {
         this.setState({
             name: e.target.value
         });
-        console.log('onChange', this.state.name);
+        // console.log("onChange", this.state.name);
+    }
+    getTasks() {
+        axios.get("/tasks").then((
+            response // console.log(response.data.tasks)
+        ) => {
+            this.setState({
+                tasks: response.data.tasks
+            });
+        });
+    }
+    // lifecycle method
+    componentWillMount() {
+        this.getTasks();
+        this.renderTasks();
+    }
+    renderTasks() {
+        return this.state.tasks.map(task => (
+            <div key={task.id} className="media">
+                <div className="media-body">
+                    <p>
+                        {task.name}{" "}
+                        <span className="text-muted">
+                            {" "}
+                            <br /> by {task.user.name} |{" "}
+                            {task.updated_at
+                                .split(" ")
+                                .slice(1)
+                                .join(" ")}
+                        </span>
+                        <div className="btn-group float-right">
+                            <Link
+                                className="btn btn-sm btn-success"
+                                to={"/${task.id}/edit"}
+                            >
+                                Edit
+                            </Link>
+                            <button
+                                onClick={() => this.handleDelete(task.id)}
+                                className="btn btn-sm btn-warning float-right"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </p>
+                </div>
+            </div>
+        ));
     }
     render() {
         return (
@@ -24,7 +104,7 @@ export default class App extends Component {
                         <div className="card">
                             <div className="card-header">Create Task</div>
                             <div className="card-body">
-                                <form>
+                                <form onSubmit={this.handleSubmit}>
                                     <div className="form-group">
                                         <textarea
                                             onChange={this.handleChange}
@@ -36,10 +116,16 @@ export default class App extends Component {
                                             required
                                         />
                                     </div>
-                                    <button type="submit" className="btn btn-primary">
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary"
+                                    >
                                         Create Task
-                            </button>
+                                    </button>
                                 </form>
+
+                                <hr />
+                                {this.renderTasks()}
                             </div>
                         </div>
                     </div>
